@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y unzip libpq-dev libcurl4-gnutls-dev ngi
 
 # Install PHP extensions.
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install mysqli pdo pdo_mysql bcmath curl opcache mbstring exif gd
+RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql bcmath curl opcache mbstring exif gd
 
 RUN mkdir -p /usr/src/php/ext/redis \
     && curl -L https://github.com/phpredis/phpredis/archive/5.3.4.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
