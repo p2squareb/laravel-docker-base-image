@@ -14,10 +14,15 @@ RUN apt-get update && apt-get install -y unzip libpq-dev libcurl4-gnutls-dev ngi
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install pdo pdo_mysql pgsql pdo_pgsql pcntl bcmath curl opcache mbstring exif gd 
 
+# Install Redis PHP extension.
 RUN mkdir -p /usr/src/php/ext/redis \
     && curl -L https://github.com/phpredis/phpredis/archive/5.3.4.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
     && echo 'redis' >> /usr/src/php-available-exts \
     && docker-php-ext-install redis
+
+# Install Node.js (latest version)
+RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - && \
+    apt-get install -y nodejs
 
 # Copy composer executable.
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
