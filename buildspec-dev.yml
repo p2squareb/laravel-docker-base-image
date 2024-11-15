@@ -1,0 +1,27 @@
+version: 0.2
+        
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      php: 8.2
+    commands:
+      - echo 'install ...'
+  pre_build:
+    on-failure: ABORT
+    commands:
+      - echo 'login to aws ECR ...'
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $REPOSITORY
+  build:
+    on-failure: ABORT
+    commands:
+      - echo 'build ...'
+      - cp .env.prod .env
+      - docker build -t $IMAGE .
+      - docker tag $IMAGE:$IMAGE_TAG $REPOSITORY/$IMAGE:$IMAGE_TAG
+  post_build:
+    on-failure: ABORT
+    commands:
+      - echo 'post_build ...'
+      - docker images ls -a
+      - docker push $REPOSITORY/$IMAGE:$IMAGE_TAG

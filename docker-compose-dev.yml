@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+    web:
+        container_name: livt-home
+        build:
+            context: .
+            target: php
+            args:
+                - APP_ENV=${APP_ENV}
+        environment:
+            - APP_ENV=${APP_ENV}
+        working_dir: /app
+        volumes:
+            - ./:/app
+        ports:
+            - 80:80
